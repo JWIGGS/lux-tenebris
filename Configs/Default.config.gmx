@@ -652,8 +652,8 @@
   </Options>
   <ConfigConstants>
     <constants number="2">
-      <constant name="player_light">0</constant>
-      <constant name="player_dark">1</constant>
+      <constant name="player_dark">0</constant>
+      <constant name="player_light">1</constant>
     </constants>
   </ConfigConstants>
 </Config>
