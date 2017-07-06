@@ -66,6 +66,12 @@ event_user(0);
 
 //movement
 event_user(1);
+
+//attacks
+event_user(2);
+event_user(3);
+event_user(4);
+event_user(5);
 </string>
           </argument>
         </arguments>
