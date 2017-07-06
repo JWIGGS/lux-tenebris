@@ -13,6 +13,9 @@
     <object>objects\par_player</object>
     <object>objects\obj_player_light</object>
     <object>objects\obj_player_dark</object>
+    <object>objects\par_base</object>
+    <object>objects\obj_base_light</object>
+    <object>objects\obj_base_dark</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\rm_game</room>
