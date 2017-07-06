@@ -21,6 +21,8 @@
     <object>objects\par_base</object>
     <object>objects\obj_base_light</object>
     <object>objects\obj_base_dark</object>
+    <object>objects\par_attack</object>
+    <object>objects\obj_attack_bullet</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\rm_game</room>
