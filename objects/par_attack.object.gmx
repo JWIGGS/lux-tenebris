@@ -51,7 +51,7 @@ player = player_light
           <argument>
             <kind>1</kind>
             <string>if (hp = 0){
-instance_destroy
+instance_destroy()
 }
 </string>
           </argument>
