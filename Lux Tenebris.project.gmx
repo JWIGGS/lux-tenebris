@@ -10,6 +10,9 @@
   <paths name="paths"/>
   <objects name="objects">
     <object>objects\obj_game_controller</object>
+    <object>objects\par_player</object>
+    <object>objects\obj_player_light</object>
+    <object>objects\obj_player_dark</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\rm_game</room>
