@@ -8,6 +8,111 @@
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
   <events>
+    <event eventtype="0" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///vars
+
+//variables
+global.respawnTime = 90;
+global.backgroundSurface = -1;
+
+//base spawn
+spawnBasePosition = 512;
+spawnPlayerPosition = 256
+
+
+//create bases and players
+event_user(0);
+
+//colors
+global.colorPlayer[player_dark] = make_color_rgb(50,50,50);
+global.colorPlayer[player_light] = make_color_rgb(205,205,205);
+
+global.colorBackground[player_dark] = make_color_rgb(10,10,10);
+global.colorBackground[player_light] = make_color_rgb(245,245,245);
+
+for(var i = 0; i&lt; room_width; i+=32){
+    for(var j = 0; j&lt;room_height; j+=32){
+        instance_create(i,j,obj_background);
+    }
+}
+
+array[0] = "fjfj";
+
+
+
+
+depth = 10;
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="1">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///respawn light player
+instance_create(spawnPlayerPosition,room_height/2,obj_player_light);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///repsawn dark player
+
+instance_create(room_width-spawnPlayerPosition,room_height/2,obj_player_dark);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
     <event eventtype="3" enumb="0">
       <action>
         <libid>1</libid>
@@ -30,6 +135,70 @@ if(keyboard_check_pressed(vk_escape)){
     game_end();
 }
 
+for(var i = 0; i&lt;gamepad_get_device_count(); i++){
+    if(gamepad_button_check_pressed(i,gp_select)){
+        game_restart();
+    }
+}
+
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="10">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///initial bases and players creation
+
+//bases
+instance_create(spawnBasePosition,room_height/2,obj_base_light);
+instance_create(room_width-spawnBasePosition,room_height/2,obj_base_dark);
+
+//players
+instance_create(spawnPlayerPosition,room_height/2,obj_player_light);
+instance_create(room_width-spawnPlayerPosition,room_height/2,obj_player_dark);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="64">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///draw gui
+draw_text_formatting(c_red,fa_left,fa_middle,font_default);
+draw_text(16,16,fps);
+draw_text(16,32,instance_number(all));
 
 </string>
           </argument>
@@ -53,11 +222,24 @@ if(keyboard_check_pressed(vk_escape)){
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>draw_set_color(c_red);
-draw_circle(0,0,10,false);
-draw_circle(room_width,room_height,10,false);
-
-draw_circle(room_width/2,room_height/2,16,false);
+            <string>///create background surface
+if(!surface_exists(global.backgroundSurface)){
+    global.backgroundSurface = surface_create(room_width,room_height);
+    draw_clear_alpha(c_black,0);
+    
+    surface_set_target(global.backgroundSurface);
+    
+    draw_set_color(global.colorBackground[player_dark]);
+    draw_rectangle(room_width/2,0,room_width,room_height,false);
+    
+    draw_set_color(global.colorBackground[player_light]);
+    draw_rectangle(0,0,room_width/2,room_height,false);
+    
+    surface_reset_target();
+}
+else{
+    draw_surface(global.backgroundSurface,0,0);
+}
 </string>
           </argument>
         </arguments>

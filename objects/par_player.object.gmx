@@ -33,10 +33,21 @@ player = player_light;
 //movement
 spdX = 0;
 spdY = 0;
-spdDelta = .1;
-spdMax = 5;
+spdDelta = .5;
+spdMax = 10;
 
-//attack
+//target
+targetAngle = 0;
+
+
+//attacks
+attackObject = obj_attack_bullet;
+attackDamage = 1;
+attackHp = 2;
+attackSpeed = 20;
+
+//health
+hp = 2;
 </string>
           </argument>
         </arguments>
@@ -61,10 +72,10 @@ spdMax = 5;
             <kind>1</kind>
             <string>///user events
 
-//input
+//movement
 event_user(0);
 
-//movement
+//tracking
 event_user(1);
 
 //attacks
@@ -73,11 +84,111 @@ event_user(3);
 event_user(4);
 event_user(5);
 
-//stuff
+//health check
+event_user(6);
 
-//more stuff
 
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="4" ename="par_attack">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///collision with attack
+if(other.player!=player){
+    hp -= other.damage;
+    other.hp = 0;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="16">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///no health destroy
+if(hp &lt;= 0){
+    obj_game_controller.alarm[player] = global.respawnTime;
+    instance_destroy();
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="12">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///attack 
 
+if(gamepad_button_check_pressed(player,gp_face1)){
+    
+    with(instance_create(x,y,attackObject)){
+        
+        player = other.player;
+    
+        speed = other.attackSpeed;
+        direction = other.targetAngle;
+        
+        hp = other.attackHp;
+        damage = other.attackDamage;
+        
+        sprite_index = other.sprite_index;
+        image_angle = other.targetAngle-90;
+        
+        image_xscale = .25;
+        image_yscale = .25;
+        
+        image_blend = global.colorPlayer[player];
+        
+        
+    }
+}
 </string>
           </argument>
         </arguments>
@@ -100,13 +211,30 @@ event_user(5);
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///movement
+            <string>///tracking cursor
 
-spdX = clamp(spdX+(gamepad_axis_value(player,gp_axisrh)*spdDelta),-spdMax,spdMax);
-spdY = clamp(spdY+(gamepad_axis_value(player,gp_axisrv)*spdDelta),-spdMax,spdMax);
+/*
+//Movement A
+if(abs(gamepad_axis_value(player,gp_axisrh))&gt;.5 or abs(gamepad_axis_value(player,gp_axisrv))&gt;.5){
+    targetAngle = point_direction(0,0,gamepad_axis_value(player,gp_axisrh),gamepad_axis_value(player,gp_axisrv));
+}
+*/
 
-x += spdX;
-y += spdY;
+/*
+//Movement B and C
+if(abs(gamepad_axis_value(player,gp_axislh))&gt;.5 or abs(gamepad_axis_value(player,gp_axislv))&gt;.5){
+    targetAngle = point_direction(0,0,gamepad_axis_value(player,gp_axislh),gamepad_axis_value(player,gp_axislv));
+}
+*/
+
+
+//Movement D
+if(gamepad_button_check(player,gp_shoulderlb)){
+    targetAngle += 7.5;
+}
+if(gamepad_button_check(player,gp_shoulderrb)){
+    targetAngle -= 7.5;
+}
 
 
 
@@ -133,7 +261,87 @@ y += spdY;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///input
+            <string>///movement
+
+//change speed variables
+
+//left hat
+
+/*
+//Movement A
+spdX = clamp(spdX+(gamepad_axis_value(player,gp_axislh)*spdDelta),-spdMax,spdMax);
+spdY = clamp(spdY+(gamepad_axis_value(player,gp_axislv)*spdDelta),-spdMax,spdMax);
+*/
+
+/*
+//Movement B
+spdX = lengthdir_x(spdMax,targetAngle);
+spdY = lengthdir_y(spdMax,targetAngle);
+*/
+
+
+//Movement C
+spdX = lengthdir_x((spdMax/2)+((spdMax/2)*gamepad_button_check(player,gp_shoulderl)),targetAngle);
+spdY = lengthdir_y((spdMax/2)+((spdMax/2)*gamepad_button_check(player,gp_shoulderl)),targetAngle);
+
+/*
+//Movement D
+spdX = lengthdir_x(spdMax,targetAngle);
+spdY = lengthdir_y(spdMax,targetAngle);
+*/
+
+
+//x deceleration if no x axis gamepad movement
+if(abs(gamepad_axis_value(player,gp_axislh)) &lt;.2){
+    if( abs(spdX)&gt;spdDelta){
+        spdX -= spdDelta*sign(spdX);
+    }
+    else{
+        spdX = 0;
+    }
+}
+
+//y deceleration if no y axis gamepad movement
+if(abs(gamepad_axis_value(player,gp_axislv)) &lt;.2){
+    if( abs(spdY)&gt;spdDelta){
+        spdY -= spdDelta*sign(spdY);
+    }
+    else{
+        spdY = 0;
+    }
+}
+
+
+//change x and y clamped to stay inside room
+x = clamp(x+spdX,0,room_width);
+y = clamp(y+spdY,0,room_height);
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///draw sprite
+draw_sprite_ext(sprite_index,-1,x,y,1,1,targetAngle-90,global.colorPlayer[player],1);
+
+
 </string>
           </argument>
         </arguments>

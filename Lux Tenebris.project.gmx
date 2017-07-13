@@ -6,25 +6,35 @@
   <NewExtensions/>
   <sounds name="sound"/>
   <sprites name="sprites">
-    <sprite>sprites\spr_player_dark</sprite>
-    <sprite>sprites\spr_base_light</sprite>
-    <sprite>sprites\spr_base_dark</sprite>
-    <sprite>sprites\spr_player_light</sprite>
-    <sprite>sprites\spr_test1</sprite>
-    <sprite>sprites\spr_test2</sprite>
+    <sprite>sprites\spr_player</sprite>
+    <sprite>sprites\sprite2</sprite>
+    <sprite>sprites\spr_base</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
+  <scripts name="scripts">
+    <script>scripts\draw_text_formatting.gml</script>
+  </scripts>
+  <fonts name="fonts">
+    <font>fonts\font_default</font>
+  </fonts>
   <objects name="objects">
     <object>objects\obj_game_controller</object>
-    <object>objects\par_player</object>
-    <object>objects\obj_player_light</object>
-    <object>objects\obj_player_dark</object>
-    <object>objects\par_base</object>
-    <object>objects\obj_base_light</object>
-    <object>objects\obj_base_dark</object>
-    <object>objects\par_attack</object>
-    <object>objects\obj_attack_bullet</object>
+    <objects name="player">
+      <object>objects\par_player</object>
+      <object>objects\obj_player_light</object>
+      <object>objects\obj_player_dark</object>
+    </objects>
+    <objects name="base">
+      <object>objects\par_base</object>
+      <object>objects\obj_base_light</object>
+      <object>objects\obj_base_dark</object>
+    </objects>
+    <objects name="attacks">
+      <object>objects\par_attack</object>
+      <object>objects\obj_attack_bullet</object>
+    </objects>
+    <object>objects\obj_background</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\rm_game</room>

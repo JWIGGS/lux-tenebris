@@ -25,9 +25,18 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>hp = 3
-damage = 1
-player = player_light
+            <string>///local inherited vars
+
+//movement
+speed = 0;
+direction = 0;
+
+//attack
+hp = 1;
+damage = 1;
+player = player_light;
+
+
 </string>
           </argument>
         </arguments>
@@ -50,15 +59,16 @@ player = player_light
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>if (hp = 0){
-instance_destroy()
+            <string>///destroy if hp &lt;0
+if (hp &lt;= 0){
+    instance_destroy();
 }
 </string>
           </argument>
         </arguments>
       </action>
     </event>
-    <event eventtype="4" ename="par_attack">
+    <event eventtype="7" enumb="0">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -75,53 +85,8 @@ instance_destroy()
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>hp -= damage
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="4" ename="par_base">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>base.hp -= damage
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="4" ename="par_player">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>player.hp -= damage
+            <string>///destroy
+instance_destroy();
 </string>
           </argument>
         </arguments>
