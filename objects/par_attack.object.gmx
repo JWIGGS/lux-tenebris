@@ -3,7 +3,7 @@
   <spriteName>&lt;undefined&gt;</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>0</depth>
+  <depth>-10</depth>
   <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -33,6 +33,7 @@ direction = 0;
 
 //attack
 hp = 1;
+
 damage = 1;
 player = player_light;
 
@@ -60,6 +61,14 @@ player = player_light;
           <argument>
             <kind>1</kind>
             <string>///destroy if hp &lt;0
+if(point_in_rectangle(x,y,0,0,room_width,room_height)){
+    if( obj_game_controller.grid[x div obj_game_controller.gridSize, y div obj_game_controller.gridSize]!=player){
+        obj_game_controller.grid[x div obj_game_controller.gridSize, y div obj_game_controller.gridSize] = player;
+        hp--;
+    }
+    
+}
+
 if (hp &lt;= 0){
     instance_destroy();
 }
@@ -87,6 +96,37 @@ if (hp &lt;= 0){
             <kind>1</kind>
             <string>///destroy
 instance_destroy();
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="8" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///draw
+draw_self();
+
+surface_set_target(global.backgroundSurface);
+for(i = 0; i&lt;speed; i++){
+    draw_sprite_ext(sprite_index,0,x-lengthdir_x(i,direction),y-lengthdir_y(i,direction),1,1,0,global.colorBackground[player],1);
+}
+
+surface_reset_target();
 </string>
           </argument>
         </arguments>

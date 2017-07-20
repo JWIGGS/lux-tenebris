@@ -3,7 +3,7 @@
   <spriteName>&lt;undefined&gt;</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>0</depth>
+  <depth>100</depth>
   <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -46,16 +46,21 @@ global.colorPlayer[player_light] = make_color_rgb(205,205,205);
 global.colorBackground[player_dark] = make_color_rgb(10,10,10);
 global.colorBackground[player_light] = make_color_rgb(245,245,245);
 
-for(var i = 0; i&lt; room_width; i+=32){
-    for(var j = 0; j&lt;room_height; j+=32){
-        instance_create(i,j,obj_background);
+
+gridSize = 64;
+gridWidth = room_width/gridSize;
+gridHeight = room_height/gridSize;
+grid[0,0] = 0;
+for(i = 0; i&lt;gridWidth; i++){
+    for(j = 0; j&lt;gridHeight; j++){
+        if(i&lt;gridWidth/2){
+            grid[i,j] = player_light;
+        }
+        else{
+            grid[i,j] = player_dark;
+        }
     }
 }
-
-array[0] = "fjfj";
-
-
-
 
 depth = 10;
 
@@ -200,6 +205,21 @@ draw_text_formatting(c_red,fa_left,fa_middle,font_default);
 draw_text(16,16,fps);
 draw_text(16,32,instance_number(all));
 
+if(keyboard_check(vk_tab)){
+    draw_set_alpha(.3);
+    for(i = 0; i&lt;gridWidth; i++){
+        for(j = 0; j&lt;gridHeight; j++){
+            if(grid[i,j] = player_light){
+                draw_set_color(c_yellow);
+            }
+            else{
+                draw_set_color(c_blue);
+            }
+            draw_rectangle((i*gridSize),(j*gridSize),(i*gridSize)+gridSize,(j*gridSize)+gridSize,false);
+        }
+    }
+    draw_set_alpha(1);
+}
 </string>
           </argument>
         </arguments>
@@ -229,16 +249,21 @@ if(!surface_exists(global.backgroundSurface)){
     
     surface_set_target(global.backgroundSurface);
     
-    draw_set_color(global.colorBackground[player_dark]);
-    draw_rectangle(room_width/2,0,room_width,room_height,false);
+    for(i = 0; i&lt;gridWidth; i++){
+        for(j = 0; j&lt;gridHeight; j++){
+            draw_set_color(global.colorBackground[grid[i,j]]);
+            draw_rectangle((i*gridSize),(j*gridSize),(i*gridSize)+gridSize,(j*gridSize)+gridSize,false);
+        }
+    }
     
-    draw_set_color(global.colorBackground[player_light]);
-    draw_rectangle(0,0,room_width/2,room_height,false);
+    surface_reset_target();    
     
-    surface_reset_target();
 }
 else{
+    shader_set(shd_blur);
+    shader_set_uniform_f(shader_get_uniform(shd_blur,"size"),2560.0 , 1600.0, 2.0);
     draw_surface(global.backgroundSurface,0,0);
+    shader_reset();
 }
 </string>
           </argument>

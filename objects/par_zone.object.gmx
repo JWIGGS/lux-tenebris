@@ -3,7 +3,7 @@
   <spriteName>&lt;undefined&gt;</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>-10</depth>
+  <depth>10</depth>
   <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -25,66 +25,10 @@
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///local inherited vars
-hp = 20;
+            <string>///vars
+surface = -1;
 player = player_light;
 
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="3" enumb="0">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>///restart game
-image_alpha = hp/20;
-
-if (hp &lt;= 0){
-    game_restart();
-}
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="4" ename="par_attack">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>///collision with attack
-if(other.player!=player){
-    hp -= other.damage;
-    other.hp = 0;
-    
-}
 </string>
           </argument>
         </arguments>
@@ -107,10 +51,17 @@ if(other.player!=player){
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///draw sprite
-draw_sprite_ext(sprite_index,-1,x,y,.5,.5,0,global.colorPlayer[player],1);
-
-
+            <string>///surface
+if(!surface_exists(surface)){
+    surface = surface_create(1280,1600);
+    sprite_index = sprite_create_from_surface(surface,0,0,1280,1600,false,false,0,0);
+}
+else{
+    sprite_index = sprite_create_from_surface(surface,0,0,1280,1600,false,false,0,0);
+    shader_set(global.shader[player]);
+    draw_self();
+    shader_reset();
+}
 </string>
           </argument>
         </arguments>

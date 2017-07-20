@@ -7,14 +7,17 @@
   <sounds name="sound"/>
   <sprites name="sprites">
     <sprite>sprites\spr_player</sprite>
-    <sprite>sprites\sprite2</sprite>
     <sprite>sprites\spr_base</sprite>
+    <sprite>sprites\spr_attack</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
   <scripts name="scripts">
     <script>scripts\draw_text_formatting.gml</script>
   </scripts>
+  <shaders name="shaders">
+    <shader type="GLSLES">shaders\shd_blur.shader</shader>
+  </shaders>
   <fonts name="fonts">
     <font>fonts\font_default</font>
   </fonts>
@@ -34,7 +37,6 @@
       <object>objects\par_attack</object>
       <object>objects\obj_attack_bullet</object>
     </objects>
-    <object>objects\obj_background</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\rm_game</room>

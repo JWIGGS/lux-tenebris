@@ -3,7 +3,7 @@
   <spriteName>&lt;undefined&gt;</spriteName>
   <solid>0</solid>
   <visible>-1</visible>
-  <depth>0</depth>
+  <depth>-10</depth>
   <persistent>0</persistent>
   <parentName>&lt;undefined&gt;</parentName>
   <maskName>&lt;undefined&gt;</maskName>
@@ -43,11 +43,11 @@ targetAngle = 0;
 //attacks
 attackObject = obj_attack_bullet;
 attackDamage = 1;
-attackHp = 2;
-attackSpeed = 20;
+attackHp = 10;
+attackSpeed = 10;
 
 //health
-hp = 2;
+hp = 1;
 </string>
           </argument>
         </arguments>
@@ -86,7 +86,6 @@ event_user(5);
 
 //health check
 event_user(6);
-
 
 </string>
           </argument>
@@ -178,11 +177,7 @@ if(gamepad_button_check_pressed(player,gp_face1)){
         hp = other.attackHp;
         damage = other.attackDamage;
         
-        sprite_index = other.sprite_index;
         image_angle = other.targetAngle-90;
-        
-        image_xscale = .25;
-        image_yscale = .25;
         
         image_blend = global.colorPlayer[player];
         
