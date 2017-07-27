@@ -289,7 +289,7 @@ if(!surface_exists(global.backgroundSurface)){
 }
 else{
     shader_set(shd_blur);
-    shader_set_uniform_f(shader_get_uniform(shd_blur,"size"),2560.0 , 1600.0, 2.0);
+    shader_set_uniform_f(shader_get_uniform(shd_blur,"size"),2560.0 , 1600.0, 8.0);
     draw_surface(global.backgroundSurface,0,0);
     shader_reset();
 }

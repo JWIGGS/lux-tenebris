@@ -33,8 +33,8 @@ player = player_light;
 //movement
 spdX = 0;
 spdY = 0;
-spdDelta = .5;
-spdMax = 10;
+spdDelta = 1;
+spdMax = 15;
 
 //target
 targetAngle = 0;

@@ -2,7 +2,7 @@ TODO Total:
 -Bomb attack (button B)
 	-Creates a large area that does NOT damage players
 -Properly include dash attack (button x)
-	-Spreads the color around it
+	-Spreads the color around it?
 -Particle Effects
 	-Movement trail
 	-Bullet trail
@@ -17,18 +17,16 @@ TODO Total:
 	-Small Particle(8x8)
 	-Medium Particle(16x16)
 	-Large Particle(32x32)
-	-Players Aura(64x64 to 128x128);
-	-Base Aura (128x128 to 192x192);
+	-Players Aura(64x64 to 128x128)
+	-Base Aura (128x128 to 192x192)
 	-Maybe just do a large aura and then resize as needed
+-Views and cameras
+	-Zoom in and out for action
+
 
 -Screenshake
 	-Player Death
 	-Base Death(end game)
-
-
-
-	
-
 
 Discussions:
 -Better Energy Bar
