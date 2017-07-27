@@ -93,10 +93,10 @@ if(point_in_rectangle(x,y,0,0,room_width,room_height)){
     if( obj_game_controller.grid[x div obj_game_controller.gridSize, y div obj_game_controller.gridSize]!=player){
         
         //set the grid objects
-        for(var i = -5; i&lt;6; i++){
-            for(var j = -5; j&lt;6; j++){
+        for(var i = -6; i&lt;7; i++){
+            for(var j = -6; j&lt;7; j++){
                 with(instance_create(x+(i*obj_game_controller.gridSize),y+(j*obj_game_controller.gridSize),obj_grid_interact)){
-                    if(point_distance(other.x,other.y,x,y)&gt;38){
+                    if(point_distance(other.x,other.y,x,y)&gt;48){
                         instance_destroy();
                     }
                     else{

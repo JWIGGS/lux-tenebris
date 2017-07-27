@@ -1,0 +1,53 @@
+TODO Total:
+-Bomb attack (button B)
+	-Creates a large area that does NOT damage players
+-Properly include dash attack (button x)
+	-Spreads the color around it
+-Particle Effects
+	-Movement trail
+	-Bullet trail
+	-Death Explosion
+	-Base explosion
+-Better Sprites
+	-Player Sprite (64x64)
+	-Base Sprite (128x128)
+	-Attack (64x64) OR (96x96)
+	-Bomb Shot(64x64)
+	-Bomb explosion (128x128)
+	-Small Particle(8x8)
+	-Medium Particle(16x16)
+	-Large Particle(32x32)
+	-Players Aura(64x64 to 128x128);
+	-Base Aura (128x128 to 192x192);
+	-Maybe just do a large aura and then resize as needed
+
+-Screenshake
+	-Player Death
+	-Base Death(end game)
+
+
+
+	
+
+
+Discussions:
+-Better Energy Bar
+	-Circular or Rectangular?
+	-Absolute or Relative positioning?
+-Base Health
+	-Circular or Rectangular?
+	-Absolute or Relative positioning?
+-Secondary Objectives(Zones Control)
+	-Reversi/Othello Style?
+	-Control Point Style?
+	-Percentage Style?
+
+
+
+Jonathan:
+
+
+Jerry:
+
+
+James:

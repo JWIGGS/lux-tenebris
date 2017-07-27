@@ -52,7 +52,7 @@ invulnerabilityTime = 60;
 alarm[0] = invulnerabilityTime;
 
 //energy
-energyMax = 5;
+energyMax = 6;
 energy = energyMax;
 energyDelta = .075;
 </string>
