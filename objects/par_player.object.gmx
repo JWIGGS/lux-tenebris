@@ -40,14 +40,44 @@ spdMax = 10;
 targetAngle = 0;
 
 
-//attacks
+//attack
 attackObject = obj_attack_bullet;
-attackDamage = 1;
-attackHp = 10;
-attackSpeed = 10;
+attackEnergy = 2;
 
 //health
 hp = 1;
+
+//invuln
+invulnerabilityTime = 60;
+alarm[0] = invulnerabilityTime;
+
+//energy
+energyMax = 5;
+energy = energyMax;
+energyDelta = .075;
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="2" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>//invulnerability timer
 </string>
           </argument>
         </arguments>
@@ -87,6 +117,9 @@ event_user(5);
 //health check
 event_user(6);
 
+//energy
+event_user(7);
+
 </string>
           </argument>
         </arguments>
@@ -111,9 +144,40 @@ event_user(6);
             <kind>1</kind>
             <string>///collision with attack
 if(other.player!=player){
-    hp -= other.damage;
+    if(alarm[0] =-1){
+        hp -= other.damage;
+    }
     other.hp = 0;
 }
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="17">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///energy regen
+
+if(obj_game_controller.grid[x div obj_game_controller.gridSize,y div obj_game_controller.gridSize] = player){
+    energy = clamp(energy+energyDelta,0,energyMax);
+}
+
+
 </string>
           </argument>
         </arguments>
@@ -165,17 +229,15 @@ if(hp &lt;= 0){
             <kind>1</kind>
             <string>///attack 
 
-if(gamepad_button_check_pressed(player,gp_face1)){
-    
+if(gamepad_button_check_pressed(player,gp_face1) and energy - attackEnergy&gt;=0){
+        
+    energy -= attackEnergy;
+
     with(instance_create(x,y,attackObject)){
         
         player = other.player;
     
-        speed = other.attackSpeed;
         direction = other.targetAngle;
-        
-        hp = other.attackHp;
-        damage = other.attackDamage;
         
         image_angle = other.targetAngle-90;
         
@@ -208,28 +270,7 @@ if(gamepad_button_check_pressed(player,gp_face1)){
             <kind>1</kind>
             <string>///tracking cursor
 
-/*
-//Movement A
-if(abs(gamepad_axis_value(player,gp_axisrh))&gt;.5 or abs(gamepad_axis_value(player,gp_axisrv))&gt;.5){
-    targetAngle = point_direction(0,0,gamepad_axis_value(player,gp_axisrh),gamepad_axis_value(player,gp_axisrv));
-}
-*/
-
-/*
-//Movement B and C
-if(abs(gamepad_axis_value(player,gp_axislh))&gt;.5 or abs(gamepad_axis_value(player,gp_axislv))&gt;.5){
-    targetAngle = point_direction(0,0,gamepad_axis_value(player,gp_axislh),gamepad_axis_value(player,gp_axislv));
-}
-*/
-
-
-//Movement D
-if(gamepad_button_check(player,gp_shoulderlb)){
-    targetAngle += 7.5;
-}
-if(gamepad_button_check(player,gp_shoulderrb)){
-    targetAngle -= 7.5;
-}
+//nothing here because tracking is in the same direction as your movement(targetAngle)
 
 
 
@@ -260,31 +301,16 @@ if(gamepad_button_check(player,gp_shoulderrb)){
 
 //change speed variables
 
-//left hat
 
-/*
-//Movement A
-spdX = clamp(spdX+(gamepad_axis_value(player,gp_axislh)*spdDelta),-spdMax,spdMax);
-spdY = clamp(spdY+(gamepad_axis_value(player,gp_axislv)*spdDelta),-spdMax,spdMax);
-*/
+if(gamepad_axis_value(player,gp_axislh)!=0 and gamepad_axis_value(player,gp_axislv)!=0){
+    targetAngle = point_direction(0,0,gamepad_axis_value(player,gp_axislh),gamepad_axis_value(player,gp_axislv));
+}
+if(gamepad_axis_value(player,gp_axisrh)!=0 and gamepad_axis_value(player,gp_axisrv)!=0){
+    targetAngle = point_direction(0,0,gamepad_axis_value(player,gp_axisrh),gamepad_axis_value(player,gp_axisrv));
+}
 
-/*
-//Movement B
-spdX = lengthdir_x(spdMax,targetAngle);
-spdY = lengthdir_y(spdMax,targetAngle);
-*/
-
-
-//Movement C
-spdX = lengthdir_x((spdMax/2)+((spdMax/2)*gamepad_button_check(player,gp_shoulderl)),targetAngle);
-spdY = lengthdir_y((spdMax/2)+((spdMax/2)*gamepad_button_check(player,gp_shoulderl)),targetAngle);
-
-/*
-//Movement D
-spdX = lengthdir_x(spdMax,targetAngle);
-spdY = lengthdir_y(spdMax,targetAngle);
-*/
-
+spdX = lengthdir_x((spdMax/2)+((spdMax/2)*gamepad_button_check(player,gp_face3)),targetAngle);
+spdY = lengthdir_y((spdMax/2)+((spdMax/2)*gamepad_button_check(player,gp_face3)),targetAngle);
 
 //x deceleration if no x axis gamepad movement
 if(abs(gamepad_axis_value(player,gp_axislh)) &lt;.2){
@@ -308,8 +334,8 @@ if(abs(gamepad_axis_value(player,gp_axislv)) &lt;.2){
 
 
 //change x and y clamped to stay inside room
-x = clamp(x+spdX,0,room_width);
-y = clamp(y+spdY,0,room_height);
+x = clamp(x+spdX,16,room_width-16);
+y = clamp(y+spdY,16,room_height-16);
 
 </string>
           </argument>
@@ -336,7 +362,8 @@ y = clamp(y+spdY,0,room_height);
             <string>///draw sprite
 draw_sprite_ext(sprite_index,-1,x,y,1,1,targetAngle-90,global.colorPlayer[player],1);
 
-
+draw_set_color(c_red);
+draw_rectangle(x-32,y-24,x-32+(energy*64/energyMax),y-20,false);
 </string>
           </argument>
         </arguments>

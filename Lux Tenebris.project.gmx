@@ -37,6 +37,7 @@
       <object>objects\par_attack</object>
       <object>objects\obj_attack_bullet</object>
     </objects>
+    <object>objects\obj_grid_interact</object>
   </objects>
   <rooms name="rooms">
     <room>rooms\rm_game</room>

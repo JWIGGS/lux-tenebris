@@ -26,17 +26,43 @@
           <argument>
             <kind>1</kind>
             <string>///local inherited vars
-
 //movement
-speed = 0;
+speed = 10;
 direction = 0;
 
 //attack
-hp = 1;
+hp = 10;
 
 damage = 1;
 player = player_light;
 
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="3" enumb="1">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///check if near room border
+if(!point_in_rectangle(x,y,32,32,room_width-32,room_height-32)){
+    instance_destroy();
+}
 
 </string>
           </argument>
@@ -60,42 +86,38 @@ player = player_light;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///destroy if hp &lt;0
+            <string>///grid interactions
+
+//damage from grid
 if(point_in_rectangle(x,y,0,0,room_width,room_height)){
     if( obj_game_controller.grid[x div obj_game_controller.gridSize, y div obj_game_controller.gridSize]!=player){
-        obj_game_controller.grid[x div obj_game_controller.gridSize, y div obj_game_controller.gridSize] = player;
+        
+        //set the grid objects
+        for(var i = -5; i&lt;6; i++){
+            for(var j = -5; j&lt;6; j++){
+                with(instance_create(x+(i*obj_game_controller.gridSize),y+(j*obj_game_controller.gridSize),obj_grid_interact)){
+                    if(point_distance(other.x,other.y,x,y)&gt;38){
+                        instance_destroy();
+                    }
+                    else{
+                        player = other.player;
+                    }
+                }
+            }
+        }
+    
         hp--;
     }
     
 }
 
+
+
+
+//destroy if out of health
 if (hp &lt;= 0){
     instance_destroy();
 }
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="7" enumb="0">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>///destroy
-instance_destroy();
 </string>
           </argument>
         </arguments>

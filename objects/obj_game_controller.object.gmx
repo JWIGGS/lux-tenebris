@@ -43,11 +43,11 @@ event_user(0);
 global.colorPlayer[player_dark] = make_color_rgb(50,50,50);
 global.colorPlayer[player_light] = make_color_rgb(205,205,205);
 
-global.colorBackground[player_dark] = make_color_rgb(10,10,10);
-global.colorBackground[player_light] = make_color_rgb(245,245,245);
+global.colorBackground[player_dark] = make_color_rgb(0,0,0);
+global.colorBackground[player_light] = make_color_rgb(255,255,255);
 
 
-gridSize = 64;
+gridSize = 16;
 gridWidth = room_width/gridSize;
 gridHeight = room_height/gridSize;
 grid[0,0] = 0;
@@ -63,6 +63,13 @@ for(i = 0; i&lt;gridWidth; i++){
 }
 
 depth = 10;
+
+//controller deadzone
+gamepad_set_axis_deadzone(player_light,.01);
+gamepad_set_axis_deadzone(player_dark,.01);
+
+//debug
+debug = false;
 
 </string>
           </argument>
@@ -139,6 +146,12 @@ instance_create(room_width-spawnPlayerPosition,room_height/2,obj_player_dark);
 if(keyboard_check_pressed(vk_escape)){
     game_end();
 }
+if(keyboard_check_pressed(vk_enter)){
+    game_restart();
+}
+if(keyboard_check_pressed(vk_tab)){
+    debug = !debug;
+}
 
 for(var i = 0; i&lt;gamepad_get_device_count(); i++){
     if(gamepad_button_check_pressed(i,gp_select)){
@@ -183,6 +196,30 @@ instance_create(room_width-spawnPlayerPosition,room_height/2,obj_player_dark);
         </arguments>
       </action>
     </event>
+    <event eventtype="7" enumb="3">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///free surface (prevent memory leaks)
+surface_free(global.backgroundSurface);
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
     <event eventtype="8" enumb="64">
       <action>
         <libid>1</libid>
@@ -205,21 +242,7 @@ draw_text_formatting(c_red,fa_left,fa_middle,font_default);
 draw_text(16,16,fps);
 draw_text(16,32,instance_number(all));
 
-if(keyboard_check(vk_tab)){
-    draw_set_alpha(.3);
-    for(i = 0; i&lt;gridWidth; i++){
-        for(j = 0; j&lt;gridHeight; j++){
-            if(grid[i,j] = player_light){
-                draw_set_color(c_yellow);
-            }
-            else{
-                draw_set_color(c_blue);
-            }
-            draw_rectangle((i*gridSize),(j*gridSize),(i*gridSize)+gridSize,(j*gridSize)+gridSize,false);
-        }
-    }
-    draw_set_alpha(1);
-}
+
 </string>
           </argument>
         </arguments>
@@ -264,6 +287,25 @@ else{
     shader_set_uniform_f(shader_get_uniform(shd_blur,"size"),2560.0 , 1600.0, 2.0);
     draw_surface(global.backgroundSurface,0,0);
     shader_reset();
+}
+
+
+if(debug){
+    draw_set_alpha(.3);
+    
+    for(i = 0; i&lt;gridWidth; i++){
+        for(j = 0; j&lt;gridHeight; j++){
+            if(grid[i,j] = player_light){
+                draw_set_color(c_yellow);
+            }
+            else{
+                draw_set_color(c_blue);
+            }
+            draw_rectangle((i*gridSize),(j*gridSize),(i*gridSize)+gridSize,(j*gridSize)+gridSize,false);
+        }
+    }
+    
+    draw_set_alpha(1);
 }
 </string>
           </argument>
