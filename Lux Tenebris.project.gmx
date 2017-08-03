@@ -40,7 +40,13 @@
     </datafile>
   </datafiles>
   <NewExtensions/>
-  <sounds name="sound"/>
+  <sounds name="sound">
+    <sound>sound\hit</sound>
+    <sound>sound\shoot_bullet</sound>
+    <sound>sound\shoot_bomb</sound>
+    <sound>sound\explosion_bomb</sound>
+    <sound>sound\explosion_base</sound>
+  </sounds>
   <sprites name="sprites">
     <sprite>sprites\spr_player</sprite>
     <sprite>sprites\spr_base</sprite>
