@@ -32,6 +32,8 @@ player = player_light;
 
 //movement
 spdMax = 8;
+spdMaxChange = 2;
+
 speed = spdMax;
 
 //bullet
@@ -43,8 +45,8 @@ bombObject = obj_attack_bomb;
 bombEnergy = 3;
 
 //speed
-dashSpd = 12;
-dashEnergy = .1;
+dashSpd = 16;
+dashEnergy = .12;
 
 //health
 hp = 1;
@@ -235,6 +237,12 @@ if(obj_game_controller.grid[x div obj_game_controller.gridSize,y div obj_game_co
 if(hp &lt;= 0){
     obj_game_controller.alarm[player] = global.respawnTime;
     instance_destroy();
+    
+    with(par_player){
+        if(player!=other.player){
+            energy = energyMax;
+        }
+    }
 }
 </string>
           </argument>
@@ -259,30 +267,6 @@ if(hp &lt;= 0){
           <argument>
             <kind>1</kind>
             <string>///special ability
-
-if(gamepad_button_check_pressed(player,gp_face4)){
-    for(i = 0; i&lt;8; i++){
-        if(player = player_light){
-            with(instance_create(obj_game_controller.spawnBasePosition,room_height/2,obj_zone_bullet)){
-                player = other.player;
-                direction = 340+(other.i*5);
-                
-                image_angle = other.direction-90;
-                image_blend = global.colorPlayer[player];
-            }
-        }
-        else{
-            with(instance_create(room_width-obj_game_controller.spawnBasePosition,room_height/2,obj_zone_bullet)){
-                player = other.player;
-                direction = 160+(other.i*5);
-                
-                image_angle = other.direction-90;
-                image_blend = global.colorPlayer[player];
-            }
-        }
-    }   
-    
-}
 </string>
           </argument>
         </arguments>
@@ -305,7 +289,7 @@ if(gamepad_button_check_pressed(player,gp_face4)){
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///dash ability
+            <string>///dash ability and max speed
 
 if( (gamepad_button_check(player,gp_shoulderr) or gamepad_button_check(player,gp_face3)) and energy - dashEnergy&gt;0){
         
@@ -315,6 +299,11 @@ if( (gamepad_button_check(player,gp_shoulderr) or gamepad_button_check(player,gp
 }
 else{
     speed = spdMax;
+    
+}
+
+if(obj_game_controller.grid[x div obj_game_controller.gridSize,y div obj_game_controller.gridSize]!=player){
+    speed -= spdMaxChange;
 }
 </string>
           </argument>
