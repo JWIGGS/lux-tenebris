@@ -26,15 +26,24 @@
           <argument>
             <kind>1</kind>
             <string>///local inherited vars
+
 //movement
 speed = 10;
 direction = 0;
 
 //attack
-hp = 10;
+hp = 1;
+damage = 0;
 
-damage = 1;
+//grid
+gridSizeImpact = 0;
+gridSizeRadius = 0;
+
 player = player_light;
+drawTrail = false;
+
+centered = false;
+
 
 
 </string>
@@ -60,9 +69,12 @@ player = player_light;
           <argument>
             <kind>1</kind>
             <string>///check if near room border
-if(!point_in_rectangle(x,y,32,32,room_width-32,room_height-32)){
+
+
+if(!point_in_rectangle(x,y,16,16,room_width-16,room_height-16)){
     instance_destroy();
 }
+
 
 </string>
           </argument>
@@ -90,29 +102,41 @@ if(!point_in_rectangle(x,y,32,32,room_width-32,room_height-32)){
 
 //damage from grid
 if(point_in_rectangle(x,y,0,0,room_width,room_height)){
-    if( obj_game_controller.grid[x div obj_game_controller.gridSize, y div obj_game_controller.gridSize]!=player){
+    
+    //set the grid objects
+    for(var i = -gridSizeImpact; i&lt;=gridSizeImpact; i++){
+        for(var j = -gridSizeImpact; j&lt;=gridSizeImpact; j++){
         
-        //set the grid objects
-        for(var i = -6; i&lt;7; i++){
-            for(var j = -6; j&lt;7; j++){
-                with(instance_create(x+(i*obj_game_controller.gridSize),y+(j*obj_game_controller.gridSize),obj_grid_interact)){
-                    if(point_distance(other.x,other.y,x,y)&gt;48){
-                        instance_destroy();
-                    }
-                    else{
-                        player = other.player;
+            if((x div obj_game_controller.gridSize)+i&gt;=0 and (x div obj_game_controller.gridSize)+i&lt;obj_game_controller.gridWidth and
+                (y div obj_game_controller.gridSize)+j&gt;=0 and (y div obj_game_controller.gridSize)+j&lt;obj_game_controller.gridHeight){
+                
+                
+                if(obj_game_controller.grid[(x div obj_game_controller.gridSize)+i,(y div obj_game_controller.gridSize)+j]!=player){
+                    with(instance_create(x+(i*obj_game_controller.gridSize),y+(j*obj_game_controller.gridSize),obj_grid_interact)){
+                        if(point_distance(other.x-(obj_game_controller.gridSize/2*other.centered),other.y-(obj_game_controller.gridSize/2*other.centered),x,y)&gt;other.gridSizeRadius){
+                            instance_destroy();
+                        }
+                        else{
+                            if(other.drawTrail){
+                                player = other.player;
+                            }
+                            else{
+                                player = !other.player;
+                            }
+                            other.hp --;
+                            
+                        }
                     }
                 }
+                
+                
             }
+        
+
         }
-    
-        hp--;
     }
     
 }
-
-
-
 
 //destroy if out of health
 if (hp &lt;= 0){
@@ -142,13 +166,14 @@ if (hp &lt;= 0){
             <kind>1</kind>
             <string>///draw
 draw_self();
-
-surface_set_target(global.backgroundSurface);
-for(i = 0; i&lt;speed; i++){
-    draw_sprite_ext(sprite_index,0,x-lengthdir_x(i,direction),y-lengthdir_y(i,direction),1,1,0,global.colorBackground[player],1);
+if(drawTrail){
+    surface_set_target(global.backgroundSurface);
+    draw_sprite_ext(sprite_index,0,x,y,image_xscale,image_yscale,image_angle,global.colorBackground[player],1);
+    for(i = 0; i&lt;speed; i++){
+        draw_sprite_ext(sprite_index,0,x-lengthdir_x(i,direction),y-lengthdir_y(i,direction),image_xscale,image_yscale,image_angle,global.colorBackground[player],1);
+    }
+    surface_reset_target();
 }
-
-surface_reset_target();
 </string>
           </argument>
         </arguments>

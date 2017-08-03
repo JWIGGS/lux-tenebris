@@ -22,7 +22,13 @@ TODO Total:
 	-Maybe just do a large aura and then resize as needed
 -Views and cameras
 	-Zoom in and out for action
-
+-Sound Effects
+	-Player spawn(light/dark)
+	-player bullet (light/dark)
+	-player bomb(light/dark)
+	-player death (light dark)
+	-base death (light/dark)
+	
 
 -Screenshake
 	-Player Death
@@ -39,7 +45,6 @@ Discussions:
 	-Reversi/Othello Style?
 	-Control Point Style?
 	-Percentage Style?
-
 
 
 Jonathan:

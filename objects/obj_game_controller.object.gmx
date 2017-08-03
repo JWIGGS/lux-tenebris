@@ -32,9 +32,8 @@ global.respawnTime = 90;
 global.backgroundSurface = -1;
 
 //base spawn
-spawnBasePosition = 512;
-spawnPlayerPosition = 256
-
+spawnBasePosition = 256;
+spawnPlayerPosition = 256;
 
 //create bases and players
 event_user(0);
@@ -45,7 +44,6 @@ global.colorPlayer[player_light] = make_color_rgb(205,205,205);
 
 global.colorBackground[player_dark] = make_color_rgb(0,0,0);
 global.colorBackground[player_light] = make_color_rgb(255,255,255);
-
 
 gridSize = 16;
 gridWidth = room_width/gridSize;
@@ -94,7 +92,9 @@ debug = false;
           <argument>
             <kind>1</kind>
             <string>///respawn light player
-instance_create(spawnPlayerPosition,room_height/2,obj_player_light);
+with(instance_create(spawnPlayerPosition,room_height/2,obj_player_light)){
+    direction = 90;
+}
 </string>
           </argument>
         </arguments>
@@ -119,7 +119,9 @@ instance_create(spawnPlayerPosition,room_height/2,obj_player_light);
             <kind>1</kind>
             <string>///repsawn dark player
 
-instance_create(room_width-spawnPlayerPosition,room_height/2,obj_player_dark);
+with(instance_create(room_width-spawnPlayerPosition,room_height/2,obj_player_dark)){
+    direction = 270;
+}
 </string>
           </argument>
         </arguments>
@@ -149,6 +151,10 @@ if(keyboard_check_pressed(vk_escape)){
 if(keyboard_check_pressed(vk_enter)){
     game_restart();
 }
+if(keyboard_check_pressed(vk_space)){
+    show_debug_overlay(true);
+}
+
 if(keyboard_check_pressed(vk_tab)){
     debug = !debug;
 }
@@ -190,11 +196,11 @@ instance_create(room_width-spawnBasePosition,room_height/2,obj_base_dark);
 
 //players
 with(instance_create(spawnPlayerPosition,room_height/2,obj_player_light)){
-    targetAngle = 90;
+    direction = 90;
 }
 
 with(instance_create(room_width-spawnPlayerPosition,room_height/2,obj_player_dark)){
-    targetAngle = 270;
+    direction = 270;
 }
 </string>
           </argument>
@@ -247,7 +253,6 @@ draw_text_formatting(c_red,fa_left,fa_middle,font_default);
 draw_text(16,16,fps);
 draw_text(16,32,instance_number(all));
 
-
 </string>
           </argument>
         </arguments>
@@ -288,10 +293,7 @@ if(!surface_exists(global.backgroundSurface)){
     
 }
 else{
-    shader_set(shd_blur);
-    shader_set_uniform_f(shader_get_uniform(shd_blur,"size"),2560.0 , 1600.0, 8.0);
     draw_surface(global.backgroundSurface,0,0);
-    shader_reset();
 }
 
 

@@ -31,18 +31,20 @@
 player = player_light;
 
 //movement
-spdX = 0;
-spdY = 0;
-spdDelta = 1;
-spdMax = 15;
+spdMax = 8;
+speed = spdMax;
 
-//target
-targetAngle = 0;
+//bullet
+bulletObject = obj_attack_bullet;
+bulletEnergy = 2;
 
+//bomb
+bombObject = obj_attack_bomb;
+bombEnergy = 3;
 
-//attack
-attackObject = obj_attack_bullet;
-attackEnergy = 2;
+//speed
+dashSpd = 12;
+dashEnergy = .1;
 
 //health
 hp = 1;
@@ -77,7 +79,7 @@ energyDelta = .075;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>//invulnerability timer
+            <string>///invulnerability timer
 </string>
           </argument>
         </arguments>
@@ -105,13 +107,19 @@ energyDelta = .075;
 //movement
 event_user(0);
 
-//tracking
+//particles
 event_user(1);
 
-//attacks
+//bullet attack
 event_user(2);
+
+//bomb attack
 event_user(3);
+
+//dash ability
 event_user(4);
+
+//???ability
 event_user(5);
 
 //health check
@@ -125,7 +133,7 @@ event_user(7);
         </arguments>
       </action>
     </event>
-    <event eventtype="4" ename="par_attack">
+    <event eventtype="4" ename="obj_attack_bullet">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -149,6 +157,29 @@ if(other.player!=player){
     }
     other.hp = 0;
 }
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="4" ename="par_base">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///prevent player from going inside the base
 </string>
           </argument>
         </arguments>
@@ -210,6 +241,136 @@ if(hp &lt;= 0){
         </arguments>
       </action>
     </event>
+    <event eventtype="7" enumb="15">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///special ability
+
+if(gamepad_button_check_pressed(player,gp_face4)){
+    for(i = 0; i&lt;8; i++){
+        if(player = player_light){
+            with(instance_create(obj_game_controller.spawnBasePosition,room_height/2,obj_zone_bullet)){
+                player = other.player;
+                direction = 340+(other.i*5);
+                
+                image_angle = other.direction-90;
+                image_blend = global.colorPlayer[player];
+            }
+        }
+        else{
+            with(instance_create(room_width-obj_game_controller.spawnBasePosition,room_height/2,obj_zone_bullet)){
+                player = other.player;
+                direction = 160+(other.i*5);
+                
+                image_angle = other.direction-90;
+                image_blend = global.colorPlayer[player];
+            }
+        }
+    }   
+    
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="14">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///dash ability
+
+if( (gamepad_button_check(player,gp_shoulderr) or gamepad_button_check(player,gp_face3)) and energy - dashEnergy&gt;0){
+        
+    energy -= dashEnergy;
+    speed = dashSpd;
+
+}
+else{
+    speed = spdMax;
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="13">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///bomb attack 
+
+if(gamepad_button_check_pressed(player,gp_face2) and energy - bombEnergy&gt;0 ){
+    var canFire = true;
+    if(instance_exists(obj_attack_bomb)){
+        with(obj_attack_bomb){
+            if(player = other.player){
+                canFire = false;
+            }
+        }
+    }
+    if(canFire){
+        
+        energy -= bombEnergy;
+    
+        with(instance_create(x,y,bombObject)){
+            
+            player = other.player;
+        
+            direction = other.direction;
+            image_angle = other.direction-90;
+            image_blend = global.colorPlayer[player];
+            
+            
+        }
+    
+    }
+}
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
     <event eventtype="7" enumb="12">
       <action>
         <libid>1</libid>
@@ -227,20 +388,18 @@ if(hp &lt;= 0){
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///attack 
+            <string>///bullet attack 
 
-if(gamepad_button_check_pressed(player,gp_face1) and energy - attackEnergy&gt;=0){
+if(gamepad_button_check_pressed(player,gp_face1) and energy - bulletEnergy&gt;0){
         
-    energy -= attackEnergy;
+    energy -= bulletEnergy;
 
-    with(instance_create(x,y,attackObject)){
+    with(instance_create(x,y,bulletObject)){
         
         player = other.player;
     
-        direction = other.targetAngle;
-        
-        image_angle = other.targetAngle-90;
-        
+        direction = other.direction;
+        image_angle = other.direction-90;
         image_blend = global.colorPlayer[player];
         
         
@@ -268,12 +427,7 @@ if(gamepad_button_check_pressed(player,gp_face1) and energy - attackEnergy&gt;=0
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///tracking cursor
-
-//nothing here because tracking is in the same direction as your movement(targetAngle)
-
-
-
+            <string>///player particle trail
 
 </string>
           </argument>
@@ -303,40 +457,18 @@ if(gamepad_button_check_pressed(player,gp_face1) and energy - attackEnergy&gt;=0
 
 
 if(gamepad_axis_value(player,gp_axislh)!=0 and gamepad_axis_value(player,gp_axislv)!=0){
-    targetAngle = point_direction(0,0,gamepad_axis_value(player,gp_axislh),gamepad_axis_value(player,gp_axislv));
+    direction = round(point_direction(0,0,gamepad_axis_value(player,gp_axislh),gamepad_axis_value(player,gp_axislv)));
 }
 if(gamepad_axis_value(player,gp_axisrh)!=0 and gamepad_axis_value(player,gp_axisrv)!=0){
-    targetAngle = point_direction(0,0,gamepad_axis_value(player,gp_axisrh),gamepad_axis_value(player,gp_axisrv));
-}
-
-spdX = lengthdir_x((spdMax/2)+((spdMax/2)*gamepad_button_check(player,gp_face3)),targetAngle);
-spdY = lengthdir_y((spdMax/2)+((spdMax/2)*gamepad_button_check(player,gp_face3)),targetAngle);
-
-//x deceleration if no x axis gamepad movement
-if(abs(gamepad_axis_value(player,gp_axislh)) &lt;.2){
-    if( abs(spdX)&gt;spdDelta){
-        spdX -= spdDelta*sign(spdX);
-    }
-    else{
-        spdX = 0;
-    }
-}
-
-//y deceleration if no y axis gamepad movement
-if(abs(gamepad_axis_value(player,gp_axislv)) &lt;.2){
-    if( abs(spdY)&gt;spdDelta){
-        spdY -= spdDelta*sign(spdY);
-    }
-    else{
-        spdY = 0;
-    }
+    direction = round(point_direction(0,0,gamepad_axis_value(player,gp_axisrh),gamepad_axis_value(player,gp_axisrv)));
 }
 
 
 //change x and y clamped to stay inside room
-x = clamp(x+spdX,16,room_width-16);
-y = clamp(y+spdY,16,room_height-16);
+x = clamp(x,16,room_width-16);
+y = clamp(y,16,room_height-16);
 
+image_angle += ((energy/energyMax)*10)+5;
 </string>
           </argument>
         </arguments>
@@ -360,10 +492,14 @@ y = clamp(y+spdY,16,room_height-16);
           <argument>
             <kind>1</kind>
             <string>///draw sprite
-draw_sprite_ext(sprite_index,-1,x,y,1,1,targetAngle-90,global.colorPlayer[player],1);
+
+draw_sprite_ext(sprite_index,-1,x,y,1,1,image_angle,global.colorPlayer[player],1);
+draw_sprite_ext(sprite_index,-1,x,y,1,1,image_angle+180,global.colorPlayer[player],1);
+
 
 draw_set_color(c_red);
-draw_rectangle(x-32,y-24,x-32+(energy*64/energyMax),y-20,false);
+draw_rectangle(x-32,y-26,x-32+((energy/energyMax)*64),y-36,false);
+
 </string>
           </argument>
         </arguments>

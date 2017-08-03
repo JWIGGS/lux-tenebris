@@ -28,16 +28,48 @@
             <string>///local vars
 
 event_inherited();
-
 //movement
-speed = 20;
+speed = 10;
 direction = 0;
 
 //attack
-hpMax = 20;
-hp = hpMax;
+hp = 90;
+damage = 0;
 
-damage = 1;
+//grid
+gridSizeImpact = 1;
+
+drawTrail = true;
+
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="1" enumb="0">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///create explosion
+
+with(instance_create(x,y,obj_attack_bomb_explosion)){
+    player = other.player;
+    image_blend = global.colorPlayer[player];
+}
 </string>
           </argument>
         </arguments>
@@ -61,8 +93,6 @@ damage = 1;
           <argument>
             <kind>1</kind>
             <string>///check if near room border
-
-
 if(!point_in_rectangle(x,y,16,16,room_width-16,room_height-16)){
     instance_destroy();
 }
@@ -92,45 +122,36 @@ if(!point_in_rectangle(x,y,16,16,room_width-16,room_height-16)){
             <kind>1</kind>
             <string>///grid interactions
 
-//damage from grid
-if(point_in_rectangle(x,y,0,0,room_width,room_height)){
-    
-    if(obj_game_controller.grid[x div obj_game_controller.gridSize, y div obj_game_controller.gridSize]!=player){
-        hp --;
-    }
-    
-}
+hp--;
 
 //destroy if out of health
 if (hp &lt;= 0){
     instance_destroy();
 }
 
-image_alpha = hp/hpMax;
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="4" ename="obj_attack_bullet">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>//lose health
-hp --;
+if(gamepad_button_check_pressed(player,gp_face2)){
+    instance_destroy();
+}
+
+
+//damage from grid
+if(point_in_rectangle(x,y,0,0,room_width,room_height)){
+    
+    //set the grid objects
+    for(var i = -gridSizeImpact; i&lt;=gridSizeImpact; i++){
+        for(var j = -gridSizeImpact; j&lt;=gridSizeImpact; j++){
+       
+            if(i &gt;=0 or i &lt; obj_game_controller.gridWidth or j &gt;= 0 or j &lt; obj_game_controller.gridHeight){
+                obj_game_controller.grid[(x div obj_game_controller.gridSize)+i,(y div obj_game_controller.gridSize)+j] = player;
+            }
+        
+
+        }
+    }
+    
+}
+
+
 </string>
           </argument>
         </arguments>
@@ -153,9 +174,15 @@ hp --;
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///draw self
+            <string>///draw
 draw_self();
 
+surface_set_target(global.backgroundSurface);
+draw_sprite_ext(sprite_index,0,x,y,image_xscale,image_yscale,image_angle,global.colorBackground[player],1);
+for(i = 0; i&lt;speed; i++){
+    draw_sprite_ext(sprite_index,0,x-lengthdir_x(i,direction),y-lengthdir_y(i,direction),image_xscale,image_yscale,image_angle,global.colorBackground[player],1);
+}
+surface_reset_target();
 
 </string>
           </argument>

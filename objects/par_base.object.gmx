@@ -26,7 +26,8 @@
           <argument>
             <kind>1</kind>
             <string>///local inherited vars
-hp = 20;
+hpMax = 20;
+hp = hpMax;
 player = player_light;
 
 </string>
@@ -62,7 +63,7 @@ if (hp &lt;= 0){
         </arguments>
       </action>
     </event>
-    <event eventtype="4" ename="par_attack">
+    <event eventtype="4" ename="obj_attack_bullet">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -110,7 +111,8 @@ if(other.player!=player){
             <string>///draw sprite
 draw_sprite_ext(sprite_index,-1,x,y,.5,.5,0,global.colorPlayer[player],1);
 
-
+draw_set_color(c_red);
+draw_rectangle(x-64,y-4,x-64+((hp/hpMax)*128),y+4,false);
 </string>
           </argument>
         </arguments>

@@ -27,6 +27,11 @@
             <kind>1</kind>
             <string>///variables
 player = -1;
+
+if(x div obj_game_controller.gridSize &lt;0 or x div obj_game_controller.gridSize &gt;= obj_game_controller.gridWidth or y div obj_game_controller.gridSize &lt;0 or y div obj_game_controller.gridSize &gt;= obj_game_controller.gridHeight){
+    instance_destroy();
+}
+
 </string>
           </argument>
         </arguments>
