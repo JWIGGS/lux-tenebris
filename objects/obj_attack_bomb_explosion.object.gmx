@@ -38,10 +38,16 @@ damage = 0;
 
 //grid
 gridSizeImpact = 16;
-gridSizeRadius = 32;
+gridSizeRadius = 0;
 
-x = (x div obj_game_controller.gridSize)*obj_game_controller.gridSize;
-y = (y div obj_game_controller.gridSize)*obj_game_controller.gridSize;
+image_xscale = 0;
+image_yscale = 0;
+
+
+x = (x div global.gridSize)*global.gridSize;
+y = (y div global.gridSize)*global.gridSize;
+
+destroy = false;
 
 </string>
           </argument>
@@ -69,14 +75,12 @@ y = (y div obj_game_controller.gridSize)*obj_game_controller.gridSize;
 
 gridSizeRadius+=16;
 
-if(gridSizeRadius&gt;128){
-    instance_destroy();
+if(gridSizeRadius&gt;144){
+    destroy = true;
 }
-image_xscale = (gridSizeRadius/64)+(8/32);
-image_yscale = (gridSizeRadius/64)+(8/32);
 
-image_alpha = (1-(gridSizeRadius/128))+.5;
-
+image_xscale = (gridSizeRadius/144);
+image_yscale = (gridSizeRadius/144);
 
 //damage from grid
 if(point_in_rectangle(x,y,0,0,room_width,room_height)){
@@ -85,13 +89,14 @@ if(point_in_rectangle(x,y,0,0,room_width,room_height)){
     for(var i = -gridSizeImpact; i&lt;=gridSizeImpact; i++){
         for(var j = -gridSizeImpact; j&lt;=gridSizeImpact; j++){
         
-            if((x div obj_game_controller.gridSize)+i&gt;=0 and (x div obj_game_controller.gridSize)+i&lt;obj_game_controller.gridWidth and
-                (y div obj_game_controller.gridSize)+j&gt;=0 and (y div obj_game_controller.gridSize)+j&lt;obj_game_controller.gridHeight){
+            if((x div global.gridSize)+i&gt;=0 and (x div global.gridSize)+i&lt;global.gridWidth and
+                (y div global.gridSize)+j&gt;=0 and (y div global.gridSize)+j&lt;global.gridHeight){
                 
                 
-                if(obj_game_controller.grid[(x div obj_game_controller.gridSize)+i,(y div obj_game_controller.gridSize)+j]!=player){
-                    with(instance_create(x+(i*obj_game_controller.gridSize),y+(j*obj_game_controller.gridSize),obj_grid_interact)){
-                        if(point_distance(other.x-(obj_game_controller.gridSize/2),other.y-(obj_game_controller.gridSize/2),x,y)&gt;other.gridSizeRadius){
+                if(global.grid[(x div global.gridSize)+i,(y div global.gridSize)+j]!=player){
+                    with(instance_create(x+(i*global.gridSize),y+(j*global.gridSize),obj_grid_interact)){
+                        if(point_distance(other.x-(global.gridSize/2),other.y-(global.gridSize/2),x,y)&gt;other.gridSizeRadius){
+                            
                             instance_destroy();
                         }
                         else{
@@ -134,12 +139,14 @@ if(point_in_rectangle(x,y,0,0,room_width,room_height)){
             <string>///draw
 draw_self();
 
-surface_set_target(global.backgroundSurface);
-draw_sprite_ext(sprite_index,0,x,y,image_xscale,image_yscale,image_angle,global.colorBackground[player],1);
-for(i = 0; i&lt;speed; i++){
-    draw_sprite_ext(sprite_index,0,x-lengthdir_x(i,direction),y-lengthdir_y(i,direction),image_xscale,image_yscale,image_angle,global.colorBackground[player],1);
+if(destroy){
+    surface_set_target(global.backgroundSurface);
+    draw_sprite_ext(sprite_index,0,x,y,1,1,image_angle,global.colorBackground[player],1);
+
+    surface_reset_target();
+    
+    instance_destroy();
 }
-surface_reset_target();
 
 </string>
           </argument>

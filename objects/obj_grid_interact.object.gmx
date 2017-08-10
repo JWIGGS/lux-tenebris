@@ -28,7 +28,7 @@
             <string>///variables
 player = -1;
 
-if(x div obj_game_controller.gridSize &lt;0 or x div obj_game_controller.gridSize &gt;= obj_game_controller.gridWidth or y div obj_game_controller.gridSize &lt;0 or y div obj_game_controller.gridSize &gt;= obj_game_controller.gridHeight){
+if(x div global.gridSize &lt;0 or x div global.gridSize &gt;= global.gridWidth or y div global.gridSize &lt;0 or y div global.gridSize &gt;= global.gridHeight){
     instance_destroy();
 }
 
@@ -56,8 +56,7 @@ if(x div obj_game_controller.gridSize &lt;0 or x div obj_game_controller.gridSiz
             <kind>1</kind>
             <string>///set the grid to player
 if(player != -1){
-    obj_game_controller.grid[x div obj_game_controller.gridSize,y div obj_game_controller.gridSize] = player;
-    
+    global.grid[x div global.gridSize,y div global.gridSize] = player;
     instance_destroy();
 }
 </string>

@@ -90,71 +90,35 @@ if(!point_in_rectangle(x,y,16,16,room_width-16,room_height-16)){
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///grid interactions
+            <string>///grid, alpha, trail
 
 //damage from grid
 if(point_in_rectangle(x,y,0,0,room_width,room_height)){
     
-    if(obj_game_controller.grid[x div obj_game_controller.gridSize, y div obj_game_controller.gridSize]!=player){
+    if(global.grid[x div global.gridSize, y div global.gridSize]!=player){
         hp --;
     }
     
 }
+
+//image alpha
+image_alpha = (hp/hpMax)*2;
+
+//particle trail
+repeat(round((speed/4))){
+    with(instance_create(x+random_range(-6,6),y+random_range(-6,6),obj_particle_bomb)){
+        image_blend = global.colorPlayer[other.player];
+        direction = other.direction-180;
+    }
+}
+
 
 //destroy if out of health
 if (hp &lt;= 0){
     instance_destroy();
 }
 
-image_alpha = (hp/hpMax)*2;
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="4" ename="obj_attack_bomb">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>///destroy
-instance_destroy();
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="4" ename="obj_attack_bullet">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>///destroy
-instance_destroy();
+
 </string>
           </argument>
         </arguments>

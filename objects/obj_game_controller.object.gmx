@@ -27,40 +27,38 @@
             <kind>1</kind>
             <string>///vars
 
+//colors
+colors();
+
 //variables
 global.respawnTime = 90;
+
+//background surface
 global.backgroundSurface = -1;
 
 //base spawn
 spawnBasePosition = 256;
 spawnPlayerPosition = 256;
 
-//create bases and players
-event_user(0);
+//player object
+global.playerObject[player_dark] = -1;
+global.playerObject[player_light] = -1;
 
-//colors
-global.colorPlayer[player_dark] = make_color_rgb(50,50,50);
-global.colorPlayer[player_light] = make_color_rgb(205,205,205);
-
-global.colorBackground[player_dark] = make_color_rgb(0,0,0);
-global.colorBackground[player_light] = make_color_rgb(255,255,255);
-
-gridSize = 16;
-gridWidth = room_width/gridSize;
-gridHeight = room_height/gridSize;
-grid[0,0] = 0;
-for(i = 0; i&lt;gridWidth; i++){
-    for(j = 0; j&lt;gridHeight; j++){
-        if(i&lt;gridWidth/2){
-            grid[i,j] = player_light;
+//grid
+global.gridSize = 16;
+global.gridWidth = room_width/global.gridSize;
+global.gridHeight = room_height/global.gridSize;
+global.grid[0,0] = 0;
+for(i = 0; i&lt;global.gridWidth; i++){
+    for(j = 0; j&lt;global.gridHeight; j++){
+        if(i&lt;global.gridWidth/2){
+            global.grid[i,j] = player_light;
         }
         else{
-            grid[i,j] = player_dark;
+            global.grid[i,j] = player_dark;
         }
     }
 }
-
-depth = 10;
 
 //controller deadzone
 gamepad_set_axis_deadzone(player_light,.01);
@@ -68,6 +66,19 @@ gamepad_set_axis_deadzone(player_dark,.01);
 
 //debug
 debug = false;
+
+//view controller
+instance_create(0,0,obj_view_controller);
+
+//background depth(behind everything) 
+depth = 10;
+
+//create bases and players
+event_user(player_dark);
+event_user(player_light);
+event_user(2);
+
+
 
 </string>
           </argument>
@@ -92,9 +103,7 @@ debug = false;
           <argument>
             <kind>1</kind>
             <string>///respawn light player
-with(instance_create(spawnPlayerPosition,room_height/2,obj_player_light)){
-    direction = 90;
-}
+event_user(1);
 </string>
           </argument>
         </arguments>
@@ -119,9 +128,7 @@ with(instance_create(spawnPlayerPosition,room_height/2,obj_player_light)){
             <kind>1</kind>
             <string>///repsawn dark player
 
-with(instance_create(room_width-spawnPlayerPosition,room_height/2,obj_player_dark)){
-    direction = 270;
-}
+event_user(0);
 </string>
           </argument>
         </arguments>
@@ -151,20 +158,77 @@ if(keyboard_check_pressed(vk_escape)){
 if(keyboard_check_pressed(vk_enter)){
     game_restart();
 }
-if(keyboard_check_pressed(vk_space)){
-    show_debug_overlay(true);
-}
 
 if(keyboard_check_pressed(vk_tab)){
     debug = !debug;
-}
-
-for(var i = 0; i&lt;gamepad_get_device_count(); i++){
-    if(gamepad_button_check_pressed(i,gp_select)){
-        game_restart();
+    if(debug){
+        room_speed = 10;
     }
+    else{
+        room_speed = 60;
+    }
+    show_debug_overlay(debug);
 }
 
+
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="12">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///bases creation
+
+
+instance_create(spawnBasePosition,room_height/2,obj_base_light);
+instance_create(room_width-spawnBasePosition,room_height/2,obj_base_dark);
+
+</string>
+          </argument>
+        </arguments>
+      </action>
+    </event>
+    <event eventtype="7" enumb="11">
+      <action>
+        <libid>1</libid>
+        <id>603</id>
+        <kind>7</kind>
+        <userelative>0</userelative>
+        <isquestion>0</isquestion>
+        <useapplyto>-1</useapplyto>
+        <exetype>2</exetype>
+        <functionname></functionname>
+        <codestring></codestring>
+        <whoName>self</whoName>
+        <relative>0</relative>
+        <isnot>0</isnot>
+        <arguments>
+          <argument>
+            <kind>1</kind>
+            <string>///player light creation
+
+//players
+with(instance_create(spawnPlayerPosition,room_height/2,obj_player_light)){
+    direction = 90;
+    global.playerObject[player] = id;
+}
 
 </string>
           </argument>
@@ -188,26 +252,20 @@ for(var i = 0; i&lt;gamepad_get_device_count(); i++){
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>///initial bases and players creation
-
-//bases
-instance_create(spawnBasePosition,room_height/2,obj_base_light);
-instance_create(room_width-spawnBasePosition,room_height/2,obj_base_dark);
+            <string>///player dark creation
 
 //players
-with(instance_create(spawnPlayerPosition,room_height/2,obj_player_light)){
-    direction = 90;
-}
 
 with(instance_create(room_width-spawnPlayerPosition,room_height/2,obj_player_dark)){
     direction = 270;
+    global.playerObject[player] = id;
 }
 </string>
           </argument>
         </arguments>
       </action>
     </event>
-    <event eventtype="7" enumb="3">
+    <event eventtype="7" enumb="5">
       <action>
         <libid>1</libid>
         <id>603</id>
@@ -249,9 +307,10 @@ surface_free(global.backgroundSurface);
           <argument>
             <kind>1</kind>
             <string>///draw gui
-draw_text_formatting(c_red,fa_left,fa_middle,font_default);
+draw_text_formatting(c_red,fa_left,fa_middle,font_small);
 draw_text(16,16,fps);
 draw_text(16,32,instance_number(all));
+
 
 </string>
           </argument>
@@ -281,18 +340,21 @@ if(!surface_exists(global.backgroundSurface)){
     draw_clear_alpha(c_black,0);
     
     surface_set_target(global.backgroundSurface);
+
+    draw_set_color(global.colorBackground[player_light]);
+    draw_rectangle(0,0,room_width/2,room_height,false);
     
-    for(i = 0; i&lt;gridWidth; i++){
-        for(j = 0; j&lt;gridHeight; j++){
-            draw_set_color(global.colorBackground[grid[i,j]]);
-            draw_rectangle((i*gridSize),(j*gridSize),(i*gridSize)+gridSize,(j*gridSize)+gridSize,false);
-        }
-    }
+    draw_set_color(global.colorBackground[player_dark]);
+    draw_rectangle(room_width/2,0,room_width,room_height,false);
     
-    surface_reset_target();    
+    surface_reset_target();
+    
+
     
 }
 else{
+    draw_set_color(c_black);
+    draw_rectangle(-32,-32,room_width+32,room_height+32,false);
     draw_surface(global.backgroundSurface,0,0);
 }
 
@@ -300,15 +362,15 @@ else{
 if(debug){
     draw_set_alpha(.3);
     
-    for(i = 0; i&lt;gridWidth; i++){
-        for(j = 0; j&lt;gridHeight; j++){
-            if(grid[i,j] = player_light){
+    for(i = 0; i&lt;global.gridWidth; i++){
+        for(j = 0; j&lt;global.gridHeight; j++){
+            if(global.grid[i,j] = player_light){
                 draw_set_color(c_yellow);
             }
             else{
                 draw_set_color(c_blue);
             }
-            draw_rectangle((i*gridSize),(j*gridSize),(i*gridSize)+gridSize,(j*gridSize)+gridSize,false);
+            draw_rectangle((i*global.gridSize),(j*global.gridSize),(i*global.gridSize)+global.gridSize,(j*global.gridSize)+global.gridSize,false);
         }
     }
     

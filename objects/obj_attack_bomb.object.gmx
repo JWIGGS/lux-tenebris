@@ -29,11 +29,11 @@
 
 event_inherited();
 //movement
-speed = 10;
+speed = 12;
 direction = 0;
 
 //attack
-hpMax = 90;
+hpMax = 60;
 hp = hpMax;
 damage = 0;
 
@@ -71,6 +71,8 @@ drawTrail = true;
 with(instance_create(x,y,obj_attack_bomb_explosion)){
     player = other.player;
     image_blend = global.colorPlayer[player];
+    
+    audio_sound_pitch(audio_play_sound(snd_explosion,1,false),.85+(.3*player));
 }
 </string>
           </argument>
@@ -131,35 +133,22 @@ if (hp &lt;= 0){
     instance_destroy();
 }
 
+
+//alpha
+image_alpha = (hp/hpMax)*4;
+
+//trail
+repeat(round((speed/2))){
+    with(instance_create(x+random_range(-6,6)+lengthdir_x(speed,direction),y+random_range(-6,6)+lengthdir_y(speed,direction),obj_particle_bomb)){
+        image_blend = global.colorPlayer[other.player];
+        direction = other.direction;
+    }
+}
+
+//detonation
 if(gamepad_button_check_pressed(player,gp_face2)){
     instance_destroy();
 }
-
-image_alpha = (hp/hpMax)*4;
-</string>
-          </argument>
-        </arguments>
-      </action>
-    </event>
-    <event eventtype="4" ename="obj_attack_bullet">
-      <action>
-        <libid>1</libid>
-        <id>603</id>
-        <kind>7</kind>
-        <userelative>0</userelative>
-        <isquestion>0</isquestion>
-        <useapplyto>-1</useapplyto>
-        <exetype>2</exetype>
-        <functionname></functionname>
-        <codestring></codestring>
-        <whoName>self</whoName>
-        <relative>0</relative>
-        <isnot>0</isnot>
-        <arguments>
-          <argument>
-            <kind>1</kind>
-            <string>///destroy
-instance_destroy();
 </string>
           </argument>
         </arguments>

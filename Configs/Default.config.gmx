@@ -262,7 +262,7 @@
     <option_icon>nil</option_icon>
     <option_in_app_purchase_sandbox_mode>0</option_in_app_purchase_sandbox_mode>
     <option_information></option_information>
-    <option_interpolate>False</option_interpolate>
+    <option_interpolate>True</option_interpolate>
     <option_ios_adcolony_enable_V4VC>false</option_ios_adcolony_enable_V4VC>
     <option_ios_advertising_enable>false</option_ios_advertising_enable>
     <option_ios_advertising_key></option_ios_advertising_key>
@@ -411,7 +411,7 @@
     <option_quitkey>true</option_quitkey>
     <option_resolution>0</option_resolution>
     <option_savekey>true</option_savekey>
-    <option_scale>0</option_scale>
+    <option_scale>-1</option_scale>
     <option_scaleprogress>true</option_scaleprogress>
     <option_sci_UseSCI>0</option_sci_UseSCI>
     <option_sci_serverLocation></option_sci_serverLocation>
@@ -422,7 +422,7 @@
     <option_showprogress>1</option_showprogress>
     <option_sizeable>False</option_sizeable>
     <option_stayontop>false</option_stayontop>
-    <option_sync_vertex>2147483649</option_sync_vertex>
+    <option_sync_vertex>1</option_sync_vertex>
     <option_textureGroup0_border>2</option_textureGroup0_border>
     <option_textureGroup0_nocropping>0</option_textureGroup0_nocropping>
     <option_textureGroup0_parent>&lt;none&gt;</option_textureGroup0_parent>
@@ -564,7 +564,7 @@
     <option_windows_steam_app_id>0</option_windows_steam_app_id>
     <option_windows_texture_page>8192</option_windows_texture_page>
     <option_windows_use_splash>-1</option_windows_use_splash>
-    <option_windows_vertex_buffer_method2>2</option_windows_vertex_buffer_method2>
+    <option_windows_vertex_buffer_method2>0</option_windows_vertex_buffer_method2>
     <option_winphone_480_splash_image>Configs\Default\WinPhone\SplashScreenImage480.jpg</option_winphone_480_splash_image>
     <option_winphone_720_splash_image>Configs\Default\WinPhone\SplashScreenImage720.jpg</option_winphone_720_splash_image>
     <option_winphone_768_splash_image>Configs\Default\WinPhone\SplashScreenImage.jpg</option_winphone_768_splash_image>

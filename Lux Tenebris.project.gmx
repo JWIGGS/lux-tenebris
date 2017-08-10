@@ -41,31 +41,40 @@
   </datafiles>
   <NewExtensions/>
   <sounds name="sound">
-    <sound>sound\hit</sound>
-    <sound>sound\shoot_bullet</sound>
-    <sound>sound\shoot_bomb</sound>
-    <sound>sound\explosion_bomb</sound>
-    <sound>sound\explosion_base</sound>
+    <sound>sound\snd_bomb</sound>
+    <sound>sound\snd_explosion</sound>
+    <sound>sound\snd_player_death</sound>
+    <sound>sound\snd_bullet</sound>
   </sounds>
   <sprites name="sprites">
     <sprite>sprites\spr_player</sprite>
+    <sprite>sprites\spr_player_aura</sprite>
     <sprite>sprites\spr_base</sprite>
     <sprite>sprites\spr_bullet</sprite>
     <sprite>sprites\spr_bomb</sprite>
     <sprite>sprites\spr_bomb_explosion</sprite>
     <sprite>sprites\spr_bomb_explosion_shadow</sprite>
-    <sprite>sprites\spr_player_fancy</sprite>
+    <sprite>sprites\spr_particle</sprite>
   </sprites>
   <backgrounds name="background"/>
   <paths name="paths"/>
   <scripts name="scripts">
+    <script>scripts\draw_circle_bar.gml</script>
     <script>scripts\draw_text_formatting.gml</script>
+    <script>scripts\colors.gml</script>
   </scripts>
   <fonts name="fonts">
     <font>fonts\font_default</font>
+    <font>fonts\font_small</font>
+    <font>fonts\font_medium</font>
+    <font>fonts\font_large</font>
+    <font>fonts\font_massive</font>
   </fonts>
   <objects name="objects">
-    <object>objects\obj_game_controller</object>
+    <objects name="controllers">
+      <object>objects\obj_game_controller</object>
+      <object>objects\obj_view_controller</object>
+    </objects>
     <objects name="player">
       <object>objects\par_player</object>
       <object>objects\obj_player_light</object>
@@ -81,6 +90,14 @@
       <object>objects\obj_attack_bomb</object>
       <object>objects\obj_attack_bomb_explosion</object>
       <object>objects\obj_grid_interact</object>
+    </objects>
+    <objects name="particles">
+      <object>objects\par_particle</object>
+      <object>objects\obj_particle_player</object>
+      <object>objects\obj_particle_player_death</object>
+      <object>objects\obj_particle_base</object>
+      <object>objects\obj_particle_bullet</object>
+      <object>objects\obj_particle_bomb</object>
     </objects>
   </objects>
   <rooms name="rooms">
